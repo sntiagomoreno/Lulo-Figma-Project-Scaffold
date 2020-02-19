@@ -1,33 +1,25 @@
 
 
-let Refferences = figma.createPage();
-let UXApproaches = figma.createPage();
-let ContentApproaches = figma.createPage();
-let UIApproaches = figma.createPage();
 let FinalUI = figma.createPage();
-let Prototype = figma.createPage();
-let Showcase = figma.createPage();
+let WorkInProgress = figma.createPage();
+let Scratch = figma.createPage();
+
 let Cover = figma.currentPage;
 let CoverFrame = figma.createFrame();
 let CoverHead = figma.createText();
 let CoverDesc = figma.createText();
 
 figma.currentPage.name = "⬜️ Cover";
-Refferences.name = "🔭 References";
-UXApproaches.name = "📋 UX Approaches";
-ContentApproaches.name = "✍🏼 Content Approaches"
-UIApproaches.name = "👁 UI Approaches";
-FinalUI.name = "👍 Final UI";
-Prototype.name = "📱 Prototype";
-Showcase.name = "🖥 Showcase";
+FinalUI.name = "✅ Ready For Development";
+WorkInProgress.name = "🚧 Work In Progress";
+Scratch.name = "❌ Scratch";
+
 CoverFrame.name = "Cover";
-
-
 
 Cover.appendChild(CoverFrame);
 CoverFrame.appendChild(CoverHead);
 CoverFrame.appendChild(CoverDesc);
-CoverFrame.resize(1240, 640);
+CoverFrame.resize(620, 320);
 
 let setPosition = (node, spacex, spacey) => { node.relativeTransform = [[1, 0, spacex], [0, 1, spacey]] };
 
@@ -36,22 +28,14 @@ let xCalculator = (container: FrameNode, element: TextNode) => { return ((contai
 let yCalculator = (container: FrameNode, element: TextNode) => { return ((container.height / 2) - (element.height / 2)); }
 
 let loadFontHead = async (name: string) => {
-  await figma.loadFontAsync({ family: "Roboto", style: "Bold" });
-  CoverHead.fontName = { family: "Roboto", style: "Bold" };
+  await figma.loadFontAsync({ family: "Whitney", style: "Bold" });
+  CoverHead.fontName = { family: "Whitney", style: "Bold" };
   CoverHead.characters = name;
-  CoverHead.fontSize = 74;
+  CoverHead.fontSize = 36;
   CoverHead.textAlignHorizontal = "CENTER";
 
 }
 
-let loadFontDesc = async (text) => {
-
-  await figma.loadFontAsync({ family: "Roboto", style: "Regular" });
-  CoverDesc.fontSize = 36;
-  CoverDesc.characters = text;
-  CoverDesc.textAlignHorizontal = "CENTER";
-  layoutText();
-}
 let layoutText = () => {
   let descX = xCalculator(CoverFrame, CoverDesc);
   let headX = xCalculator(CoverFrame, CoverHead);
@@ -61,11 +45,11 @@ let layoutText = () => {
   setPosition(CoverHead, headX, headY);
   setPosition(CoverDesc, descX, descY);
 }
-let run = async ()=>{
-await loadFontHead("Add Heading");
-await loadFontDesc("Add Description");
-figma.notify("Project Scafolding Done 👍")
-figma.closePlugin();
+
+let run = async () => {
+  await loadFontHead("Add Heading");
+  figma.notify("Project Scafolding Done 👍")
+  figma.closePlugin();
 }
 
 run();
