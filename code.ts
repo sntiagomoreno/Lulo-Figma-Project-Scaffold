@@ -1,53 +1,84 @@
 
-
+// Create pages
 let FinalUI = figma.createPage();
 let WorkInProgress = figma.createPage();
 let Scratch = figma.createPage();
 
-let Cover = figma.currentPage;
-let CoverFrame = figma.createFrame();
-let CoverHead = figma.createText();
-let CoverDesc = figma.createText();
-
+// Set page names
 figma.currentPage.name = "⬜️ Cover";
 FinalUI.name = "✅ Ready For Development";
 WorkInProgress.name = "🚧 Work In Progress";
 Scratch.name = "❌ Scratch";
 
-CoverFrame.name = "Cover";
+// Create elements within the cover frame.
+let Cover = figma.currentPage;
+let CoverFrame = figma.createFrame();
+let CoverHead = figma.createText();
+let CoverDesc = figma.createText();
+// For when external links support is added.
+// let CoverLink = figma.createText();
 
+CoverFrame.name = "Cover";
 Cover.appendChild(CoverFrame);
 CoverFrame.appendChild(CoverHead);
 CoverFrame.appendChild(CoverDesc);
-CoverFrame.resize(620, 320);
+CoverFrame.resize(740, 300);
 
-let setPosition = (node, spacex, spacey) => { node.relativeTransform = [[1, 0, spacex], [0, 1, spacey]] };
-
-let xCalculator = (container: FrameNode, element: TextNode) => { return ((container.width / 2) - (element.width / 2)); }
-
-let yCalculator = (container: FrameNode, element: TextNode) => { return ((container.height / 2) - (element.height / 2)); }
-
-let loadFontHead = async (name: string) => {
-  await figma.loadFontAsync({ family: "Whitney", style: "Bold" });
-  CoverHead.fontName = { family: "Whitney", style: "Bold" };
+// Cover title/header styles.
+let createHeader = async (name: string) => {
+  await figma.loadFontAsync({ family: "Inter", style: "Bold" });
+  CoverHead.fontName = { family: "Inter", style: "Bold" };
   CoverHead.characters = name;
   CoverHead.fontSize = 36;
   CoverHead.textAlignHorizontal = "CENTER";
+}
 
+let createDescription = async (text) => {
+  await figma.loadFontAsync({ family: "Inter", style: "Regular" });
+  CoverDesc.fontSize = 16;
+  CoverDesc.characters = text;
+  CoverDesc.textAlignHorizontal = "CENTER";
+  layoutText();
+}
+
+// let createSpecLink = async (text) => {
+//   await figma.loadFontAsync({ family: "Inter", style: "Regular" });
+//   CoverLink.fontSize = 14;
+//   CoverLink.characters = text;
+//   CoverLink.textAlignHorizontal = "CENTER";
+//   layoutText();
+// }
+
+// Utility functions for layout
+const setPosition = (node, spacex, spacey) => { 
+  node.relativeTransform = [[1, 0, spacex], [0, 1, spacey]] 
+}
+
+const xCalculator = (container: FrameNode, element: TextNode) => { 
+  return ((container.width / 2) - (element.width / 2)); 
+}
+
+const yCalculator = (container: FrameNode, element: TextNode) => { 
+  return ((container.height / 2) - (element.height / 2)); 
 }
 
 let layoutText = () => {
   let descX = xCalculator(CoverFrame, CoverDesc);
   let headX = xCalculator(CoverFrame, CoverHead);
   let headY = (yCalculator(CoverFrame, CoverHead) - 30);
-  let descY = headY + CoverHead.height + 20;
+  let descY = headY + CoverHead.height + 16;
+  let linkY = headY + CoverDesc.height + 8;
 
   setPosition(CoverHead, headX, headY);
   setPosition(CoverDesc, descX, descY);
+  // setPosition(CoverLink, descX, linkyY);
 }
 
 let run = async () => {
-  await loadFontHead("Add Heading");
+  await createHeader("Project Name");
+  await createDescription("Write a quick project Description");
+  // For when external link support feature is released.
+  // await createSpecLink("Product Spec →");
   figma.notify("Project Scafolding Done 👍")
   figma.closePlugin();
 }
