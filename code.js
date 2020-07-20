@@ -8,74 +8,43 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 // Create pages
-let FinalUI = figma.createPage();
-let WorkInProgress = figma.createPage();
-let Scratch = figma.createPage();
-// Set page names
-figma.currentPage.name = "⬜️ Cover";
-FinalUI.name = "✅ Ready For Development";
-WorkInProgress.name = "🚧 Work In Progress";
-Scratch.name = "❌ Scratch";
-// Create elements within the cover frame.
-let Cover = figma.currentPage;
-let CoverFrame = figma.createFrame();
-let CoverHead = figma.createText();
-let CoverDesc = figma.createText();
-// For when external links support is added.
-// let CoverLink = figma.createText();
-CoverFrame.name = "Cover";
-Cover.appendChild(CoverFrame);
-CoverFrame.appendChild(CoverHead);
-CoverFrame.appendChild(CoverDesc);
-CoverFrame.resize(740, 300);
-// Cover title/header styles.
-let createHeader = (name) => __awaiter(this, void 0, void 0, function* () {
-    yield figma.loadFontAsync({ family: "Inter", style: "Bold" });
-    CoverHead.fontName = { family: "Inter", style: "Bold" };
-    CoverHead.characters = name;
-    CoverHead.fontSize = 36;
-    CoverHead.textAlignHorizontal = "CENTER";
-});
-let createDescription = (text) => __awaiter(this, void 0, void 0, function* () {
-    yield figma.loadFontAsync({ family: "Inter", style: "Regular" });
-    CoverDesc.fontSize = 16;
-    CoverDesc.characters = text;
-    CoverDesc.textAlignHorizontal = "CENTER";
-    layoutText();
-});
-// let createSpecLink = async (text) => {
-//   await figma.loadFontAsync({ family: "Inter", style: "Regular" });
-//   CoverLink.fontSize = 14;
-//   CoverLink.characters = text;
-//   CoverLink.textAlignHorizontal = "CENTER";
-//   layoutText();
-// }
-// Utility functions for layout
-const setPosition = (node, spacex, spacey) => {
-    node.relativeTransform = [[1, 0, spacex], [0, 1, spacey]];
-};
-const xCalculator = (container, element) => {
-    return ((container.width / 2) - (element.width / 2));
-};
-const yCalculator = (container, element) => {
-    return ((container.height / 2) - (element.height / 2));
-};
-let layoutText = () => {
-    let descX = xCalculator(CoverFrame, CoverDesc);
-    let headX = xCalculator(CoverFrame, CoverHead);
-    let headY = (yCalculator(CoverFrame, CoverHead) - 30);
-    let descY = headY + CoverHead.height + 16;
-    let linkY = headY + CoverDesc.height + 8;
-    setPosition(CoverHead, headX, headY);
-    setPosition(CoverDesc, descX, descY);
-    // setPosition(CoverLink, descX, linkyY);
-};
+let workInProgressPage = figma.createPage();
+let scratchPage = figma.createPage();
+// Set page names and renames the default "Page 1"
+figma.currentPage.name = "✅ Ready For Development";
+workInProgressPage.name = "🚧 Work In Progress";
+scratchPage.name = "❌ Scratch";
+// Frame for wrapping the list of page examples.
+let listFrame = figma.createFrame();
+listFrame.name = "Other page examples";
+listFrame.layoutMode = "VERTICAL";
+listFrame.counterAxisSizingMode = "AUTO";
+listFrame.verticalPadding = 16;
+listFrame.horizontalPadding = 16;
+listFrame.itemSpacing = 16;
+listFrame.cornerRadius = 8;
+scratchPage.appendChild(listFrame);
 let run = () => __awaiter(this, void 0, void 0, function* () {
-    yield createHeader("Project Name");
-    yield createDescription("Write a quick project Description");
-    // For when external link support feature is released.
-    // await createSpecLink("Product Spec →");
+    // Need to load a font here to generate the other page examples.
+    yield figma.loadFontAsync({ family: "Inter", style: "Regular" });
+    yield figma.loadFontAsync({ family: "Inter", style: "Bold" });
+    // Not all projects need a prototype, shipped it/released, or research page.
+    // However in order to make adding one of these pages easily, we add some
+    // text to our scratch page so we can copy/paste them with the proper emoji.
+    yield createAdditionalPageExample("🚢 Shipped");
+    yield createAdditionalPageExample("🕹 Prototype");
+    yield createAdditionalPageExample("⚙️ Components");
+    yield createAdditionalPageExample("👀 Ready for Review");
     figma.notify("Project Scafolding Done 👍");
     figma.closePlugin();
 });
+// This function adds an example of how to name your less common pages + their emoji
+// to your scratch page.
+let createAdditionalPageExample = (text) => {
+    let linkLabel = figma.createText();
+    linkLabel.fontName = { family: "Inter", style: "Regular" };
+    linkLabel.characters = text;
+    linkLabel.fontSize = 16;
+    listFrame.appendChild(linkLabel);
+};
 run();
