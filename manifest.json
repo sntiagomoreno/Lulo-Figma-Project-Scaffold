@@ -1,6 +1,10 @@
 {
-  "name": "Discord Project Scaffold",
+  "name": "Lulo Project Scaffold",
   "id": "",
   "api": "1.0.0",
-  "main": "code.js"
+  "main": "code.js",
+  "menu": [
+    {"name": "Scaffold", "command": "scaffold"},
+    {"name": "Clean File", "command": "delete"}
+  ]
 }
